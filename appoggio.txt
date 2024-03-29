@@ -1,0 +1,19 @@
+<hr>
+    {% if results %}
+        <h2>Sessioni trovate:</h2>
+        <ul>
+        {% for session in results %}
+            <li>{{ session[0] }} - {{ session[1] }} - {{ session[2] }} - {{ session[3] }} - {{ session[4] }}
+                <form method="POST" action="{{ url_for('remove') }}">
+                    <input type="hidden" name="materia" value="{{ session[0] }}">
+                    <input type="hidden" name="giorno" value="{{ session[1] }}">
+                    <input type="hidden" name="professore" value="{{ session[2] }}">
+                    <input type="hidden" name="fascia" value="{{ session[3] }}">
+                    <input type="hidden" name="aula" value="{{ session[3] }}">
+                    
+                    <button type="submit">Rimuovi</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
