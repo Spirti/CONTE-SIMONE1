@@ -1,0 +1,55 @@
+
+{%extends "layout.html"%}
+{%block title%} Collezione {%endblock%}
+{%block head%} 
+{{super ()}}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  .book {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+  .book h2 {
+    margin-top: 0;
+  }
+</style>
+
+{%endblock%}
+
+{%block content%}
+<div class="container">
+    <h1>Elenco Libri</h1>
+  
+    <!-- Sezione 1 -->
+    <div class="section">
+      <div class="book">
+        <h2>Titolo Libro 1</h2>
+        <p>Autore 1</p>
+      </div>
+      <!-- Ripetere per altri 9 libri -->
+    </div>
+  
+    <!-- Sezione 2 -->
+    <div class="section">
+      <!-- Ripetere per 10 libri -->
+    </div>
+  
+    <!-- Ripetere il formato per altre sezioni, se necessario -->
+  
+  </div>
+{%endblock%}
