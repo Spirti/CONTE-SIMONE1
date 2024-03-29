@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    {%block head%}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>
+    {%block title%} {%endblock%}
+   - Biblioteca Comunale</title>
+  <link href="../static/style.css" rel="stylesheet" type="text/css"/>
+  {%endblock%}
+</head>
+<body>
+  <header>
+      <div>
+        <h1 style="margin: 0;">Biblioteca Comunale</h1>
+      </div>
+      <div>
+        <a href="{{ url_for ('login')}}" class="button">Login</a>
+        <a href="{{ url_for ('signup')}}" class="button">Registrati</a>
+      </div>
+    
+  </header>
+
+  <nav>
+    
+    <a href="{{ url_for ('index')}}">Home</a>
+    <a href="{{ url_for ('collezione')}}">Collezione</a>
+    <a href="#">Servizi</a>
+    <a href="#">Eventi</a>
+    <a href="#">Contatti</a>
+    
+  </nav>
+  <div class="container">
+    {%block content%}
+    
+    {%endblock%}
+  </div>
+  <footer>
+    <p>&copy; 2024 Biblioteca Comunale. Tutti i diritti riservati.</p>
+  </footer>
+</body>
+</html>
