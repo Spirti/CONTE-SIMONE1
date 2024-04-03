@@ -28,10 +28,17 @@
     margin-top: 0;
   }
 </style>
-
+<link href="../static/barra.css" rel="stylesheet" type="text/css"/>
 {%endblock%}
 
 {%block content%}
+<form action="">
+	<label for="search">Search</label>
+	<input id="search" type="search">
+	<span class="caret"></span>
+  <input type="submit">
+</form>
+
 <div class="container">
     <h1>Elenco Libri</h1>
 

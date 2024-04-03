@@ -4,6 +4,7 @@ Titolo		varchar	 (100),
 Autore 		varchar  (100),
 N_Copie	        varchar  (100),
 disponibilità	boolean		
+CHECK (LENGTH(ISBN) == 13)	
 );
 
 
