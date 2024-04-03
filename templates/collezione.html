@@ -34,22 +34,19 @@
 {%block content%}
 <div class="container">
     <h1>Elenco Libri</h1>
-  
+
+    {% for post in posts %}
     <!-- Sezione 1 -->
     <div class="section">
       <div class="book">
-        <h2>Titolo Libro 1</h2>
-        <p>Autore 1</p>
+        <h2>{{post.Titolo}}</h2>
+        <p>{{post.Autore}}</p>
       </div>
-      <!-- Ripetere per altri 9 libri -->
     </div>
-  
-    <!-- Sezione 2 -->
-    <div class="section">
-      <!-- Ripetere per 10 libri -->
-    </div>
+    {%endfor%}
+
   
     <!-- Ripetere il formato per altre sezioni, se necessario -->
   
-  </div>
+</div>
 {%endblock%}

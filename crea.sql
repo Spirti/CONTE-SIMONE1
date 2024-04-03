@@ -1,6 +1,6 @@
 CREATE TABLE Libro (
 ISBN		smallint (13) primary key,
-Titoto		varchar	 (100),
+Titolo		varchar	 (100),
 Autore 		varchar  (100),
 N_Copie	        varchar  (100),
 disponibilità	boolean		
