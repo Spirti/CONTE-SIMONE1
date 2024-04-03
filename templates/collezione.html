@@ -28,14 +28,15 @@
     margin-top: 0;
   }
 </style>
-<link href="../static/barra.css" rel="stylesheet" type="text/css"/>
 {%endblock%}
 
 {%block content%}
-<form action="">
-	<label for="search">Search</label>
-	<input id="search" type="search">
-	<span class="caret"></span>
+<form action="/ricerca" method="post">
+  <label>Ricerca per titolo e/o autore</label> <br>
+	<label for="search">Titolo</label>
+	<input id="search" name="Titolo" placeholder="Titolo..." type="search">
+  <label for="search">Autore</label>
+  <input id="search" name="Autore" type="search" placeholder="Autore...">
   <input type="submit">
 </form>
 

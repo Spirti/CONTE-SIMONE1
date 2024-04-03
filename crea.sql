@@ -3,7 +3,7 @@ ISBN		smallint (13) primary key,
 Titolo		varchar	 (100),
 Autore 		varchar  (100),
 N_Copie	        varchar  (100),
-disponibilità	boolean		
+Disponibilita	boolean		
 CHECK (LENGTH(ISBN) == 13)	
 );
 
