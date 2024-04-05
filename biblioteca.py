@@ -45,12 +45,25 @@ def ricerca():
     titolo = request.form['Titolo']
     autore = request.form['Autore']
     print(titolo, autore)
-    '''connection = sqlite3.connect('database.db')
-    connection.row_factory=sqlite3.Row
-    connection.execute(' SELECT FROM tabella WHERE (?)',)
-    connection.comnit()
-    connection.close( )'''
-    return redirect('/collezione')
+    if titolo!="" and autore=="":
+        connection = sqlite3.connect('biblioteca.db')
+        connection.row_factory=sqlite3.Row
+        risultato = connection.execute(" SELECT * FROM Libro WHERE Titolo LIKE (?)",(f'%{titolo}%',)).fetchall()
+        connection.commit()
+        connection.close( )
+    elif titolo=="" and autore!="":
+        connection = sqlite3.connect('biblioteca.db')
+        connection.row_factory=sqlite3.Row
+        risultato = connection.execute(" SELECT * FROM Libro WHERE Autore LIKE (?)",(f'%{autore}%',)).fetchall()
+        connection.commit()
+        connection.close( )
+    elif titolo!="" and autore!="":
+        connection = sqlite3.connect('biblioteca.db')
+        connection.row_factory=sqlite3.Row
+        risultato = connection.execute(" SELECT * FROM Libro WHERE Titolo LIKE ? and Autore LIKE ?",(f'%{titolo}%',f'%{autore}%',)).fetchall()
+        connection.commit()
+        connection.close()
+    return render_template ('collezione.html',posts=risultato)
 
 app.run(host='0.0.0.0', port=81, debug=True) #salviamo i maro
 #perche loro sono innocenti 
