@@ -27,6 +27,24 @@
   .book h2 {
     margin-top: 0;
   }
+
+  .availability-icon {
+            font-size: 24px;
+            vertical-align: middle;
+        }
+        .available {
+            color: green;
+        }
+        .not-available {
+            color: red;
+        }
+
+
+      
+       
+
+
+
 </style>
 {%endblock%}
 
@@ -42,16 +60,28 @@
 
 <div class="container">
     <h1>Elenco Libri</h1>
-
     {% for post in posts %}
     <!-- Sezione 1 -->
     <div class="section">
-      <div class="book">
-        <h2>{{post.Titolo}}</h2>
-        <p>{{post.Autore}}</p>
-      </div>
+        <div class="book">
+          <div  class="book-info " style="text-align: left;" > <!-- Div per contenere il titolo e l'autore -->
+            <h1>{{ post.Titolo }}</h1>
+            <p class = "izquierda">Autore: {{ post.Autore }}</p>
+        </div>
+            
+            <p> {{ post.Descrizione }}</p>
+
+            <p class = "derecha">
+              Disponibilità:
+              {% if post.Disponibilita %}
+                  <span class="availability-icon available">&#10003;</span>
+              {% else %}
+                  <span class="availability-icon not-available">&#10007;</span>
+              {% endif %}
+            </p>
+        </div>
     </div>
-    {%endfor%}
+    {% endfor %}
 
   
     <!-- Ripetere il formato per altre sezioni, se necessario -->

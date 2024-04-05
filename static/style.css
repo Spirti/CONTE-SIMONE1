@@ -33,9 +33,21 @@ input[type="submit"]:hover {
   background-color: #555;
 }
 
+p.izquierda {
+  text-align: left;
+}
+
+p.derecha {
+  text-align: right;
+}
+
+
+
 p {
   text-align: center;
 }
+
+
 
 .button {
   display: inline-block;

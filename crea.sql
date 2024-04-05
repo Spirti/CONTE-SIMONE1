@@ -3,9 +3,11 @@ ISBN		smallint (13) primary key,
 Titolo		varchar	 (100),
 Autore 		varchar  (100),
 N_Copie	        varchar  (100),
+Descrizione         text,
 Disponibilita	boolean		
 CHECK (LENGTH(ISBN) == 13)	
 );
+
 
 
 CREATE TABLE Utente(

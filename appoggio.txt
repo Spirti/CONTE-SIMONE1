@@ -17,3 +17,14 @@
         {% endfor %}
         </ul>
     {% endif %}
+
+
+
+
+
+
+        .book-info h1,
+        .book-info p {
+            text-align: left; /* Allinea il testo a sinistra */
+            margin: 0; /* Rimuove il margine per un'esperienza più pulita */
+        }
