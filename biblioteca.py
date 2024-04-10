@@ -1,3 +1,4 @@
+from datetime import datetime, date
 from flask import Flask, render_template, request, flash, url_for, session, redirect
 import sqlite3, random
 from string import ascii_letters
@@ -17,6 +18,24 @@ connection.close()
 
 @app.route('/')
 def index ():
+    odierno = date.today()
+    
+    connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
+    connection.row_factory=sqlite3.Row
+    dates  = connection.execute ('SELECT data_partenza FROM Prestito').fetchall()
+    for row in dates:
+        oggetto_datetime = datetime.strptime(row['data_partenza'], '%Y-%m-%d')
+        print(row['data_partenza'])
+        if (odierno== oggetto_datetime.date()): #ho messo == per controllare se fa update, risulta un problema. mettere quando risolto >
+            print( "siamo tornati")
+            connection.execute('UPDATE Prestito SET Numero_giorni = Numero_giorni - 1 WHERE data_partenza= ?', (row['data_partenza']))
+            print( "siamo tornati in due")
+
+
+
+
+
+
     if not session.get("nome"):
         return render_template('index.html')
     user=session.get("nome", None)
