@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, flash, url_for, session, redirect, session
 import sqlite3
+
 app = Flask(__name__)
 '''
 connection = sqlite3.connect('biblioteca.db')
@@ -48,8 +49,21 @@ def collezione ():
     connection.row_factory=sqlite3.Row
     posts = connection.execute ('SELECT * FROM Libro').fetchall() #same goes for tabella
     connection.close()
-    
+    print (posts)
     return render_template ('collezione.html',posts=posts)
+
+
+@app.route('/prenotazione', methods=("POST",))
+def prenotazione ():
+    ISBN = request.form['ISBN']
+    connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
+    connection.row_factory=sqlite3.Row
+    connection.execute('UPDATE Libro SET N_Copie = N_Copie - 1 WHERE ISBN= ?', (ISBN,))
+    connection.commit()
+    connection.close()
+    return redirect ('/collezione')
+
+    
 
 @app.route('/ricerca', methods=("POST",))
 def ricerca():

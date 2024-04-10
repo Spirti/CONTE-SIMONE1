@@ -39,6 +39,7 @@
             color: red;
         }
 
+     
 
       
        
@@ -74,10 +75,15 @@
             <p class = "derecha">
               Disponibilità:
               {% if post.Disponibilita %}
-                  <span class="availability-icon available">&#10003;</span>
-              {% else %}
-                  <span class="availability-icon not-available">&#10007;</span>
-              {% endif %}
+              <span class="availability-icon available">&#10003;</span>
+              <form action="/prenotazione" method="POST">
+                <input type="hidden" name="ISBN" value="{{ post.ISBN }}">
+                <button type="submit" class="button">Prenota</button>
+            </form>
+
+          {% else %}
+              <span class="availability-icon not-available">&#10007;</span>
+          {% endif %}
             </p>
         </div>
     </div>
