@@ -28,7 +28,7 @@ def index ():
         print(row['data_partenza'])
         if (odierno== oggetto_datetime.date()): #ho messo == per controllare se fa update, risulta un problema. mettere quando risolto >
             print( "siamo tornati")
-            connection.execute('UPDATE Prestito SET Numero_giorni = Numero_giorni - 1 WHERE data_partenza= ?', (row['data_partenza']))
+            #connection.execute('UPDATE Prestito SET Numero_giorni = Numero_giorni - 1 WHERE data_partenza= ?', (row['data_partenza']))
             print( "siamo tornati in due")
 
 
