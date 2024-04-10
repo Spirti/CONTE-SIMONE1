@@ -61,6 +61,7 @@
 
 <div class="container">
     <h1>Elenco Libri</h1>
+    <h1 style="color: rgb(7, 222, 50);"></h1style> {{messaggio}}</h1>
     {% for post in posts %}
     <!-- Sezione 1 -->
     <div class="section">
@@ -76,17 +77,31 @@
               Disponibilità:
               {% if post.Disponibilita %}
               <span class="availability-icon available">&#10003;</span>
-              <form action="/prenotazione" method="POST">
+              {% if 'nome' in session %}
+              <form action="/prenotare" method="POST">
                 <input type="hidden" name="ISBN" value="{{ post.ISBN }}">
+                <input type="hidden" name="N_Copie" value="{{ post.N_Copie }}">
+     
                 <button type="submit" class="button">Prenota</button>
-            </form>
-
+                </form>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="button">Entra per prenotare</a>
+                {% endif %}
           {% else %}
               <span class="availability-icon not-available">&#10007;</span>
           {% endif %}
             </p>
         </div>
     </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div style="color: rgb(7, 222, 50);" class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
     {% endfor %}
 
   

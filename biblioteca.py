@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, url_for, session, redirect
 import sqlite3, random
 from string import ascii_letters
+from datetime import date
 
 app = Flask(__name__)
 
@@ -19,6 +20,7 @@ def index ():
     if not session.get("nome"):
         return render_template('index.html')
     user=session.get("nome", None)
+    
     return render_template('index.html', user=user)
 
 @app.route('/login') #miao proprio coccode perfino 
@@ -50,6 +52,7 @@ def execlog():
 
 @app.route('/logok')
 def logok():
+    
     #print(session.get("nome", None))
     if not session.get("nome"):
         return render_template('log_in.html')
@@ -85,22 +88,47 @@ def signupmanda ():
 
 @app.route('/collezione')
 def collezione ():
+    nome = session.get("nome")
     connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
     connection.row_factory=sqlite3.Row
     posts = connection.execute ('SELECT * FROM Libro').fetchall() #same goes for tabella
     connection.close()
     print (posts)
-    return render_template ('collezione.html',posts=posts)
+    return render_template ('collezione.html',posts=posts, nome=nome)
+
+
+@app.route('/prenotare', methods=("POST",))
+def prenotare ():
+    ISBN = request.form['ISBN']
+    N_Copie = request.form['N_Copie']
+
+   # ID = session.get("ID")
+   # print (ID)
+    return render_template('prestito.html', ISBN = ISBN, N_Copie = N_Copie)
+
 
 
 @app.route('/prenotazione', methods=("POST",))
 def prenotazione ():
     ISBN = request.form['ISBN']
+    ID = session.get("nome")
+    N_Copie = request.form['N_Copie']
+    Numero_giorni = request.form['Numero_giorni']
+    data_partenza = date.today()
+    print (N_Copie)
     connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
     connection.row_factory=sqlite3.Row
-    connection.execute('UPDATE Libro SET N_Copie = N_Copie - 1 WHERE ISBN= ?', (ISBN,))
+    if (N_Copie == "1"):
+        print (N_Copie)
+        connection.execute('UPDATE Libro SET N_Copie = N_Copie - 1 WHERE ISBN= ?', (ISBN,))
+        connection.execute('UPDATE Libro SET Disponibilita = False WHERE ISBN= ?', (ISBN,))
+        connection.execute('INSERT INTO Prestito(ISBN,ID,Numero_giorni, data_partenza) VALUES (?,?,?,?)',(ISBN,ID,Numero_giorni,data_partenza))
+    else:
+         connection.execute('UPDATE Libro SET N_Copie = N_Copie - 1 WHERE ISBN= ?', (ISBN,))
+         connection.execute('INSERT INTO Prestito(ISBN,ID,Numero_giorni, data_partenza) VALUES (?,?,?,?)',(ISBN,ID,Numero_giorni,data_partenza))
     connection.commit()
     connection.close()
+    flash('Prenotazione effettuata con successo!', 'success') 
     return redirect ('/collezione')
 
     
