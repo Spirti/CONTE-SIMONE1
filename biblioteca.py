@@ -23,11 +23,22 @@ def login ():
 
 
 
-@app.route('/signup')
+@app.route('/signup', methods=("POST","GET"))
 def signup ():
+
     return render_template ('sign_up.html')
 
-
+@app.route('/signupmanda', methods=("POST",))
+def signupmanda ():
+    nome = request.form['nome']
+    cognome = request.form['cognome']
+    email = request.form['email']
+    username = request.form['username']
+    password = request.form['password']
+    password2 = request.form['password2']
+    #print(nome,cognome,email,username,password)
+    #if(password==password2)
+    return render_template ('sign_up.html')
 
 
 @app.route('/collezione')
