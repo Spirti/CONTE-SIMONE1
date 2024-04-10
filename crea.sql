@@ -1,31 +1,38 @@
 CREATE TABLE Libro (
-ISBN		smallint (13) primary key,
-Titolo		varchar	 (100),
-Autore 		varchar  (100),
-N_Copie	        varchar  (100),
-Descrizione         text,
-Disponibilita	boolean		
-CHECK (LENGTH(ISBN) == 13)	
+    ISBN          SMALLINT (13) PRIMARY KEY,
+    Titolo        VARCHAR (100),
+    Autore        VARCHAR (100),
+    N_Copie       VARCHAR (100),
+    Descrizione   TEXT,
+    Disponibilita BOOLEAN       CHECK (LENGTH(ISBN) == 13) 
 );
 
 
-
-CREATE TABLE Utente(
-ID		varchar	 (100) primary key,
-Nome		varchar	 (100),
-Cognome		varchar	 (100),
-Email		varchar	 (100),
-Password	varchar	 (100),
-Tipo		varchar	 (100)
+CREATE TABLE Utente (
+    Username VARCHAR (100) PRIMARY KEY,
+    Nome     VARCHAR (100),
+    Cognome  VARCHAR (100),
+    Email    VARCHAR (100),
+    Password VARCHAR (100),
+    Tipo     VARCHAR (100) 
 );
 
 
 CREATE TABLE Prestito (
-ISBN		smallint (13)  ,
-ID		varchar	 (100) ,
-Numero_giorni	int (256),
-data_partenza        date,
-Foreign Key (ID) REFERENCES Utente (ID),
-Foreign Key (ISBN) REFERENCES Libro (ISBN),
-Primary key (ISBN, ID)
-)
+    ISBN          SMALLINT (13),
+    ID            VARCHAR (100),
+    Numero_giorni INT,
+    data_partenza DATE,
+    FOREIGN KEY (
+        ID
+    )
+    REFERENCES Utente (Username),
+    FOREIGN KEY (
+        ISBN
+    )
+    REFERENCES Libro (ISBN),
+    PRIMARY KEY (
+        ISBN,
+        ID
+    )
+);

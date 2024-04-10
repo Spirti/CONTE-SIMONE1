@@ -2,7 +2,7 @@ from datetime import datetime, date
 from flask import Flask, render_template, request, flash, url_for, session, redirect
 import sqlite3, random
 from string import ascii_letters
-from datetime import date
+from datetime import date,timedelta
 
 app = Flask(__name__)
 
@@ -19,18 +19,23 @@ connection.close()
 @app.route('/')
 def index ():
     odierno = date.today()
-    
+    print(odierno)
     connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
     connection.row_factory=sqlite3.Row
-    dates  = connection.execute ('SELECT data_partenza FROM Prestito').fetchall()
+    dates  = connection.execute ('SELECT data_partenza,Numero_giorni FROM Prestito').fetchall()
     for row in dates:
-        oggetto_datetime = datetime.strptime(row['data_partenza'], '%Y-%m-%d')
+        partenza = datetime.strptime(row['data_partenza'], '%Y-%m-%d')
+        #print((odierno-oggetto_datetime.date()).days)
         print(row['data_partenza'])
-        if (odierno== oggetto_datetime.date()): #ho messo == per controllare se fa update, risulta un problema. mettere quando risolto >
-            print( "siamo tornati")
-            #connection.execute('UPDATE Prestito SET Numero_giorni = Numero_giorni - 1 WHERE data_partenza= ?', (row['data_partenza']))
-            print( "siamo tornati in due")
-
+        print(type(row['Numero_giorni']))
+        #NON SERVE MA LO TENGO PERCHE' NON SI SA MAI dataFine=partenza.date() + timedelta(days=row['Numero_giorni'])  #vedo che data è quella in cui deve finire (data inizio+giorni)
+        differenza = odierno - partenza.date() #oggi - data di partenza
+        print(differenza.days) #quanti giorni sono
+        diffG = row['Numero_giorni'] - differenza.days #giorni di differenza tra i giorni del prestito e i giorni effettivamente passati
+        print(diffG)
+        #fare il controlllo su questa differenza (se >0 tutto a posto se =0 scade oggi se <0 problema)
+        #print( "siamo tornati in due")
+            
 
 
 
@@ -39,7 +44,7 @@ def index ():
     if not session.get("nome"):
         return render_template('index.html')
     user=session.get("nome", None)
-    
+    print(user)
     return render_template('index.html', user=user)
 
 @app.route('/login') #miao proprio coccode perfino 
