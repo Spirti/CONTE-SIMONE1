@@ -61,7 +61,15 @@
 
 <div class="container">
     <h1>Elenco Libri</h1>
-    <h1 style="color: rgb(7, 222, 50);"></h1style> {{messaggio}}</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div style="color: rgb(7, 222, 50);" class="alert alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
     {% for post in posts %}
     <!-- Sezione 1 -->
     <div class="section">
@@ -93,15 +101,7 @@
             </p>
         </div>
     </div>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div style="color: rgb(7, 222, 50);" class="alert alert-{{ category }}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+   
     {% endfor %}
 
   
