@@ -1,6 +1,9 @@
-from flask import Flask, render_template, request, flash, url_for, session, redirect, session
-import sqlite3
+from flask import Flask, render_template, request, flash, url_for, session, redirect
+import sqlite3, random
+from string import ascii_letters
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = ''.join(random.choice(ascii_letters) for i in range(50))
 '''
 connection = sqlite3.connect('biblioteca.db')
 with open ('cose.sql') as f:
@@ -12,16 +15,45 @@ connection.close()
 
 @app.route('/')
 def index ():
-    
-    
-    
-    return render_template ('index.html') #posts = posts 
+    if not session.get("nome"):
+        return render_template('index.html')
+    user=session.get("nome", None)
+    return render_template('index.html', user=user)
 
 @app.route('/login') #miao proprio coccode perfino 
 def login ():
-    return render_template ('log_in.html')
+    return render_template ('log_in.html',messaggio="")
 
+@app.route('/executelogin', methods=('GET', 'POST'))
+def execlog():
+    if request.method == 'POST':
+        user = request.form['username']
+        psw = request.form['password']
+        #print(user, psw)
+        query = 'SELECT Username, Password FROM Utente where Username="' + user + '" and Password="' + psw + '"'
+        print(query)
+        connection = sqlite3.connect('biblioteca.db')
+        connection.row_factory = sqlite3.Row
+        result = connection.execute(query).fetchall()
+        if (len(result)) == 0:
+            print("Credenziali non corrette")
+            return render_template('log_in.html')
+        else:
+            print("Logged in")
+            session["nome"] = user
+            session["connesso"] = True
+            session.modified = True
+            print("sessione:", session["nome"])
+            return redirect(url_for('logok'))
+    return render_template('log_in.html')
 
+@app.route('/logok')
+def logok():
+    print(session.get("nome", None))
+    if not session.get("nome"):
+        return render_template('log_in.html')
+    #return redirect(url_for('ok'))
+    return redirect('/')
 
 @app.route('/signup', methods=("POST","GET"))
 def signup ():
@@ -30,20 +62,28 @@ def signup ():
 
 @app.route('/signupmanda', methods=("POST",))
 def signupmanda ():
+    print("Sono qui")
     nome = request.form['nome']
     cognome = request.form['cognome']
     email = request.form['email']
     username = request.form['username']
     password = request.form['password']
     password2 = request.form['password2']
-    #print(nome,cognome,email,username,password)
-    #if(password==password2)
-    return render_template ('sign_up.html')
+    print(nome,cognome,email,username,password)
+    if(password!=password2):
+        return render_template ('sign_up.html',errore="Le password non sono uguali!")
+    else:
+        connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
+        connection.row_factory=sqlite3.Row
+        connection.execute('INSERT INTO Utente(Username,Nome,Cognome,Email,Password,Tipo) VALUES (?,?,?,?,?,"utente")',(username,nome,cognome,email,password))#same goes for tabella
+        connection.commit()
+        connection.close()
+        return render_template("log_in.html",messaggio="Registrazione avvenuta con successo")
+    #return render_template ('sign_up.html',errore="")
 
 
 @app.route('/collezione')
 def collezione ():
-
     connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
     connection.row_factory=sqlite3.Row
     posts = connection.execute ('SELECT * FROM Libro').fetchall() #same goes for tabella
