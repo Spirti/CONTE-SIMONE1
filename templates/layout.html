@@ -15,7 +15,9 @@
   <header>
       <div>
         <h1 style="margin: 0;">Biblioteca Comunale</h1>
-        {% if user %} <p>Ciao, {{user}}</p> {% endif %}
+        {% if user %} <p>Ciao, {{user}}</p>
+            {% if tipo=="admin" %} <a href="{{url_for('admin')}}"> Pannello Admin </a> {% endif %}
+        {% endif %}
       </div>
       {% if not user %}
       <div>

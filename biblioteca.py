@@ -35,17 +35,15 @@ def index ():
         print(diffG)
         #fare il controlllo su questa differenza (se >0 tutto a posto se =0 scade oggi se <0 problema)
         #print( "siamo tornati in due")
-            
-
-
 
 
 
     if not session.get("nome"):
         return render_template('index.html')
     user=session.get("nome", None)
+    tipo=session.get("tipo", None)
     print(user)
-    return render_template('index.html', user=user)
+    return render_template('index.html', user=user, tipo=tipo)
 
 @app.route('/login') #miao proprio coccode perfino 
 def login ():
@@ -57,11 +55,12 @@ def execlog():
         user = request.form['username']
         psw = request.form['password']
         #print(user, psw)
-        query = 'SELECT Username, Password FROM Utente where Username="' + user + '" and Password="' + psw + '"'
+        query = 'SELECT Username, Password, Tipo FROM Utente where Username="' + user + '" and Password="' + psw + '"'
         print(query)
         connection = sqlite3.connect('biblioteca.db')
         connection.row_factory = sqlite3.Row
         result = connection.execute(query).fetchall()
+        print(result)
         if (len(result)) == 0:
             print("Credenziali non corrette")
             return render_template('log_in.html')
@@ -69,6 +68,8 @@ def execlog():
             print("Logged in")
             session["nome"] = user
             session["connesso"] = True
+            print(result[0])
+            session["tipo"]=result[0]["Tipo"] #non si fa così non riesco a trovare come si fa
             session.modified = True
             print("sessione:", session["nome"])
             return redirect(url_for('logok'))
@@ -108,6 +109,11 @@ def signupmanda ():
         connection.close()
         return render_template("log_in.html",messaggio="Registrazione avvenuta con successo")
     #return render_template ('sign_up.html',errore="")
+
+
+@app.route('/admin')
+def admin():
+    return render_template("admin.html")
 
 
 @app.route('/collezione')
