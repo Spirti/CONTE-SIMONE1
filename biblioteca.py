@@ -235,5 +235,18 @@ def ricerca():
         connection.close()
     return render_template ('collezione.html',posts=risultato)
 
+
+@app.route('/restituire', methods=("POST",))
+def restituisco ():
+    ISBN = request.form["ISBN"]
+    user = request.form['user']
+    connection = sqlite3.connect('biblioteca.db')
+    connection.row_factory=sqlite3.Row
+    connection.execute("DELETE FROM Prestito WHERE ISBN = ? AND ID = ?", (ISBN, user))
+
+    
+    connection.commit()
+    connection.close()
+    return redirect ('/')
 app.run(host='0.0.0.0', port=81, debug=True) #salviamo i maro
 #perche loro sono innocenti 

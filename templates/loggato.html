@@ -10,16 +10,22 @@
     <p> hoes mad </p>
     {% for post in posts %}
     {% for past in pasts %}
-    <h1>{{ past.ISBN}}</h1>
-    <h1>{{ post.ISBN}}</h1>
+  
     {% if post.ID == user and post.ISBN == past.ISBN %}
-        <p> hoes mad </p>
+      
             <div class="section">
                 <div class="book">
                     <div class="book-info" style="text-align: left;">
                         <!-- Mostra solo il titolo del libro -->
                         <h1>{{ past.Titolo }}</h1>
+                        
                         <pclass="izquierda">   {{ messaggio }}  </p>
+                        <form action="/restituire" method="POST">
+                            <input type="hidden" name="ISBN" value="{{ past.ISBN }}">
+                            <input type="hidden" name="user" value="{{ user }}">
+                 
+                            <button type="submit" class="button">restituisci</button>
+                        </form>
                     </div>
                 </div>
           
