@@ -69,7 +69,7 @@ def execlog():
             session["nome"] = user
             session["connesso"] = True
             print(result[0])
-            session["tipo"]=result[0]["Tipo"] #non si fa così non riesco a trovare come si fa
+            session["tipo"]=result[0]["Tipo"]  
             session.modified = True
             print("sessione:", session["nome"])
             return redirect(url_for('logok'))
@@ -82,6 +82,11 @@ def logok():
     if not session.get("nome"):
         return render_template('log_in.html')
     #return redirect(url_for('ok'))
+    return redirect('/')
+
+@app.route('/logout')
+def logout():
+    session.clear()
     return redirect('/')
 
 @app.route('/signup', methods=("POST","GET"))
@@ -113,18 +118,46 @@ def signupmanda ():
 
 @app.route('/admin')
 def admin():
-    return render_template("admin.html")
+    user=session.get("nome", None)
+    tipo=session.get("tipo", None)
+    return render_template("admin.html",user=user,tipo=tipo)
+
+@app.route('/inserisci', methods=("POST",))
+def inserisci():
+    titolo = request.form['titolo']
+    autore = request.form['autore']
+    ISBN = int(request.form['ISBN'])
+    n_copie = request.form['n_copie']
+    descrizione = request.form['descrizione']
+    connection = sqlite3.connect('biblioteca.db')
+    connection.row_factory = sqlite3.Row
+    connection.execute('INSERT INTO Libro(Titolo,Autore,ISBN,N_copie,Descrizione,Disponibilita) VALUES(?,?,?,?,?,true)',(titolo,autore,ISBN,n_copie,descrizione))
+    connection.commit()
+    connection.close()
+    return redirect('/admin')
 
 
 @app.route('/collezione')
 def collezione ():
-    nome = session.get("nome")
+    user = session.get("nome")
+    tipo=session.get("tipo", None)
     connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
     connection.row_factory=sqlite3.Row
     posts = connection.execute ('SELECT * FROM Libro').fetchall() #same goes for tabella
     connection.close()
     print (posts)
-    return render_template ('collezione.html',posts=posts, nome=nome)
+    return render_template ('collezione.html',posts=posts, user=user, tipo=tipo)
+
+@app.route('/<int:ISBN>/cancella', methods=("POST",))
+def cancella (ISBN):
+    connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
+    connection.row_factory=sqlite3.Row
+    posts = connection.execute ('DELETE FROM Libro WHERE ISBN=?',(ISBN,)) #same goes for tabella
+    connection.commit()
+    connection.close()
+    #print (posts)
+    return redirect('/collezione')
+
 
 
 @app.route('/prenotare', methods=("POST",))

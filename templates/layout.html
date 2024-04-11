@@ -15,28 +15,29 @@
   <header>
       <div>
         <h1 style="margin: 0;">Biblioteca Comunale</h1>
-        {% if user %} <p>Ciao, {{user}}</p>
-            {% if tipo=="admin" %} <a href="{{url_for('admin')}}"> Pannello Admin </a> {% endif %}
-        {% endif %}
-      </div>
-      {% if not user %}
-      <div>
-        <a href="{{ url_for ('login')}}" class="button">Login</a>
-        <a href="{{ url_for ('signup')}}" class="button">Registrati</a>
-      </div>
-      {% endif %}
+        
     
   </header>
 
   <nav>
+    <div class="navbar-left">
+        <a href="{{ url_for ('index')}}">Home</a>
+        <a href="{{ url_for ('collezione')}}">Collezione</a>
+        {% if tipo=="admin" %} <a href="{{url_for('admin')}}"> Pannello Admin </a> {% endif %}
+
+        <span style="float: right;">
+          {% if user %}
+              <p>Ciao, {{user}}</p>
+              <a href="{{ url_for ('logout')}}" class="button">Logout</a>
+          {% else %}
+                  <a href="{{ url_for ('login')}}" class="button">Login</a>
+                  <a href="{{ url_for ('signup')}}" class="button">Registrati</a>
+          {% endif %}
+        </span>
+    </div>
     
-    <a href="{{ url_for ('index')}}">Home</a>
-    <a href="{{ url_for ('collezione')}}">Collezione</a>
-    <a href="#">Servizi</a>
-    <a href="#">Eventi</a>
-    <a href="#">Contatti</a>
-    
-  </nav>
+</nav>
+
   <div class="container">
     {%block content%}
     

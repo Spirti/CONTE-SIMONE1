@@ -5,5 +5,15 @@
 {%endblock%}
 
 {%block content%}
-MIAAAAAo
+<div class="container">
+    <h2>Inserisci un nuovo libro</h2>
+    <form action="/inserisci" method="post">
+      <input type="text" name="titolo" placeholder="Titolo" required>
+      <input type="text" name="autore" placeholder="Autore" required>
+      <input type="text" name="ISBN" placeholder="ISBN" required>
+      <input type="text" name="n_copie" placeholder="Numero di copie" required>
+      <input type="text" name="descrizione" placeholder="Descrizione" required>
+      <input type="submit" value="Inserisci">
+    </form>
+  </div>
 {%endblock%}

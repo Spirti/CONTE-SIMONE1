@@ -81,6 +81,7 @@ nav {
   color: #fff;
   text-align: center;
   padding: 10px;
+  overflow: hidden;
 }
 nav a {
   color: #fff;
@@ -104,3 +105,5 @@ footer {
   bottom: 0;
   width: 100%;
 }
+
+

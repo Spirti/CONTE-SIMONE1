@@ -95,6 +95,9 @@
                 {% else %}
                 <a href="{{ url_for('login') }}" class="button">Entra per prenotare</a>
                 {% endif %}
+                {% if tipo == 'admin' %} 
+                  <form action="{{ post.ISBN }}/cancella" method="POST"> <button type="submit" class="button">Cancella libro</button> </form>
+                {% endif %}
           {% else %}
               <span class="availability-icon not-available">&#10007;</span>
           {% endif %}
