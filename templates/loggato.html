@@ -1,0 +1,34 @@
+{%extends "layout.html"%}
+{%block title%} Home {%endblock%}
+{%block head%} 
+{{super ()}}
+
+
+{%endblock%}
+{%block content%}
+<h2>Bentornato {{ user }}</h2>
+    <p> hoes mad </p>
+    {% for post in posts %}
+    {% for past in pasts %}
+    <h1>{{ past.ISBN}}</h1>
+    <h1>{{ post.ISBN}}</h1>
+    {% if post.ID == user and post.ISBN == past.ISBN %}
+        <p> hoes mad </p>
+            <div class="section">
+                <div class="book">
+                    <div class="book-info" style="text-align: left;">
+                        <!-- Mostra solo il titolo del libro -->
+                        <h1>{{ past.Titolo }}</h1>
+                        <pclass="izquierda">   {{ messaggio }}  </p>
+                    </div>
+                </div>
+          
+  
+    <!-- Ripetere il formato per altre sezioni, se necessario -->
+  
+</div>
+{% endif %}
+{% endfor %}
+{% endfor %}
+{%endblock%}
+

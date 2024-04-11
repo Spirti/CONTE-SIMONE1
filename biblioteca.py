@@ -18,24 +18,9 @@ connection.close()
 
 @app.route('/')
 def index ():
-    odierno = date.today()
-    print(odierno)
-    connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
-    connection.row_factory=sqlite3.Row
-    dates  = connection.execute ('SELECT data_partenza,Numero_giorni FROM Prestito').fetchall()
-    for row in dates:
-        partenza = datetime.strptime(row['data_partenza'], '%Y-%m-%d')
-        #print((odierno-oggetto_datetime.date()).days)
-        print(row['data_partenza'])
-        print(type(row['Numero_giorni']))
-        #NON SERVE MA LO TENGO PERCHE' NON SI SA MAI dataFine=partenza.date() + timedelta(days=row['Numero_giorni'])  #vedo che data è quella in cui deve finire (data inizio+giorni)
-        differenza = odierno - partenza.date() #oggi - data di partenza
-        print(differenza.days) #quanti giorni sono
-        diffG = row['Numero_giorni'] - differenza.days #giorni di differenza tra i giorni del prestito e i giorni effettivamente passati
-        print(diffG)
-        #fare il controlllo su questa differenza (se >0 tutto a posto se =0 scade oggi se <0 problema)
-        #print( "siamo tornati in due")
 
+
+   
 
 
     if not session.get("nome"):
@@ -43,7 +28,36 @@ def index ():
     user=session.get("nome", None)
     tipo=session.get("tipo", None)
     print(user)
-    return render_template('index.html', user=user, tipo=tipo)
+    messaggio =""
+    odierno = date.today()
+    print(odierno)
+    connection = sqlite3.connect('biblioteca.db') #cambiare il nome del database nel caso
+    connection.row_factory=sqlite3.Row
+    dates  = connection.execute ('SELECT data_partenza,Numero_giorni FROM Prestito').fetchall()
+    posts = connection.execute ('SELECT ISBN, ID FROM Prestito').fetchall() 
+    pasts = connection.execute ('SELECT ISBN, Titolo FROM Libro').fetchall() 
+    for row in dates:
+        partenza = datetime.strptime(row['data_partenza'], '%Y-%m-%d')
+        #print((odierno-oggetto_datetime.date()).days)
+        print(row['data_partenza'])
+        print(type(row['Numero_giorni']))
+        differenza = odierno - partenza.date() #oggi - data di partenza
+        print(differenza.days) #quanti giorni sono
+        diffG = row['Numero_giorni'] - differenza.days #giorni di differenza tra i giorni del prestito e i giorni effettivamente passati
+        if ( diffG == 0):
+            messaggio = "scade oggi"
+        elif ( diffG < 0):
+            messaggio= "La durata del prestito è terminata, restituire" 
+        elif (diffG > 0):
+            messaggio = f"Giorni rimanenti:  { diffG} " 
+            print (messaggio)
+        print(diffG)
+        #fare il controlllo su questa differenza (se >0 tutto a posto se =0 scade oggi se <0 problema)
+        #print( "siamo tornati in due")
+
+    
+
+    return render_template('loggato.html', user=user, tipo=tipo, messaggio = messaggio, posts = posts, pasts = pasts)
 
 @app.route('/login') #miao proprio coccode perfino 
 def login ():
